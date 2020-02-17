@@ -1,5 +1,5 @@
 import logging
-import usb
+from app import usb
 from json import load, dump
 
 logger = logging.get_logger(__name__)
