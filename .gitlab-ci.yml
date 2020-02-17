@@ -8,4 +8,4 @@ test:
   script:
   - pip install pipenv
   - python -m pipenv install
-  - python -m pipenv run "python -m pytest"
+  - python -m pipenv run pytest
