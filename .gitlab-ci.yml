@@ -6,6 +6,6 @@ stages:
 test:
   stage: test
   script:
-  - pip install pipenv
-  - python -m pipenv shell
-  - python -m pytest
+  - sudo pip install pipenv
+  - sudo python -m pipenv shell
+  - sudo python -m pytest
