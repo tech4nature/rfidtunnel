@@ -1,11 +1,11 @@
+image: python:3.8.1
+
 stages:
   - test
 
 test:
   stage: test
   script:
-  - apt-get update -qy
-  - apt-get install -y python-dev python-pip
   - pip install pipenv
   - python -m pipenv shell
   - python -m pytest
