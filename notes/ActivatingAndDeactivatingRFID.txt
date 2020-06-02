@@ -1,0 +1,11 @@
+As we have to have the RFID board connected to power 24/7, we need some way of turning it off and on and shutdown and startup respectivly.
+
+Deactivation:
+
+We will run a SET READER DE-ACTIVE command(SRD) to deactivate the RFID board.
+The wittyPi software allows for commands to be ran just before shutdown in "wittypi/beforeShutdown.sh"
+This script file will contain 2 commands, 1 to kill the python process, and the other to connect to the serial port again and send the command!
+
+Activation:
+
+On the RFID class initialisation, it will run a SET READER ACTIVE command(SRA) to activate the RFID board.

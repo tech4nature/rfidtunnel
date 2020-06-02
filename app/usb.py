@@ -1,18 +1,30 @@
 import subprocess
-from json import dump, load
 from logging import getLogger
-from os import listdir
+from os import listdir, path
 
 logger = getLogger(__name__)
 
 
-def check_for_mount(usb_state):
-    if not usb_state:
+def poweroff():
+    if path.exists('/dev/sda'):
+        logger.debug('USB found!')
+        subprocess.run(['sudo', 'udisksctl', 'unmount', '-b', '/dev/sda1'])
         subprocess.run(['sudo', 'udisksctl', 'power-off', '-b', '/dev/sda'])  # Power off USB drive to save power
+        logger.info('USB powered down')
 
-    if usb_state:
-        subprocess.run(['sudo', 'udisksctl', 'mount', '-b', '/dev/sda1'])  # Mount USB drive
+
+def mount():
+    if path.exists('/dev/sda'):
+        logger.debug('USB found!')
+        subprocess.run(['sudo', 'udisksctl', 'mount', '-b', '/dev/sda1'])  # Power off USB drive to save power
+        logger.info('USB mounted')
+
 
 
 def get_mounted_dir():
-    return '/media/root/' + listdir('/media/root/')[0] + '/'
+    try:
+        return '/media/root/' + listdir('/media/root/')[0] + '/'
+        
+    except Exception as e:
+        logger.error(f'Error during trying to find mounted dir: \n {e}')
+        

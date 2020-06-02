@@ -1,0 +1,10 @@
+{
+    "box_id": "007",
+    "starttime": "21:00:00",
+    "endtime": "06:00:00",
+    "startdate": "01/01/2020",
+    "enddate": "01/01/2030",
+    "rfid_timeout": 45,
+    "power_log_time": 3600, // Interval between power logging, in seconds. Default: 3600
+    "rfid_tag_type": "EM4100" // Can be EM4100 or FDX-B. EM4100 will also read HDX if you use FDX-B
+} 
