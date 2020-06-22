@@ -1,0 +1,8 @@
+{
+    "box_id": "007",
+    "rfid_timeout": 45,  // The amount of time before the RFID sensor retries
+    "power_log_time": 3600, // Interval between power logging, in seconds. Default: 3600
+    "rfid_tag_type": "EM4100", // Can be EM4100 or FDX-B. EM4100 will also read HDX if you use FDX-B
+    "voltage_threshold": 9.6, // At this point the device will not wake up again until the battery is charged
+    "recovery_threshold": 12.8 // At the point the device will regain the ability to wake up
+}

@@ -9,3 +9,5 @@ This script file will contain 2 commands, 1 to kill the python process, and the 
 Activation:
 
 On the RFID class initialisation, it will run a SET READER ACTIVE command(SRA) to activate the RFID board.
+
+THIS IS NOW UNNEEDED AS THE RFID WILL NOW BE POWERED OFF THE PI

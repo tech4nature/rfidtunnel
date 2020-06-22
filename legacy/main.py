@@ -71,10 +71,11 @@ def log_power():
 if __name__ == "__main__":
     # Setup logging to record into a file called tunnel.log, tunnel.log is limited to 1KiB, once the file is full,
     # it will copy the contents of tunnel.log into another file: tunnel.log.1. This process is then repeated until it
-    # reaches hedge.log.5, after this point the last backup, hedge.log.5, will be deleted.
+    # reaches tunnel.log.5, after this point the last backup, tunnel.log.5, will be deleted.
     # More extensive explanation: https://docs.python.org/3/library/logging.handlers.html#rotatingfilehandler
 
     formatter = '%(asctime)s:%(levelname)s:%(name)s:%(message)s'
+    handler = logging.handlers.RotatingFileHandler('tunnel.log', maxBytes=1024, backupCount=5)
 
     logging.basicConfig(filename='tunnel.log', level=logging.DEBUG, format=formatter)
 

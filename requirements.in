@@ -3,3 +3,4 @@ pyserial
 gpiozero
 json_minify
 pip-tools
+pysmbus

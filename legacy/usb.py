@@ -20,11 +20,9 @@ def mount():
         logger.info('USB mounted')
 
 
-
 def get_mounted_dir():
     try:
         return '/media/root/' + listdir('/media/root/')[0] + '/'
-        
+
     except Exception as e:
         logger.error(f'Error during trying to find mounted dir: \n {e}')
-        
