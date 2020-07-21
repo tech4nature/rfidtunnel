@@ -5,6 +5,7 @@ from csv import DictWriter
 import os
 from time import time
 from typing import Optional
+import subprocess
 
 from .const import *
 from .usb import mount, poweroff
@@ -33,14 +34,20 @@ def start():
         writer = DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
-    try:
-        copyfile(DATA_DIR / 'tunnel.log', mounted_dir / 'tunnel.log')
-        copyfile(DATA_DIR / 'data.csv', mounted_dir / 'data.csv')
-        logger.info("Files Copied")
-    except Exception as e:
-        logger.error("This happened during copying files to the USB stick: " + str(e))
+    if mounted_dir and disk_path:
+        try:
+            copyfile(DATA_DIR / 'tunnel.log', mounted_dir / 'tunnel.log')
+            copyfile(DATA_DIR / 'data.csv', mounted_dir / 'data.csv')
+            logger.info("Files Copied")
+        except Exception as e:
+            logger.error("This happened during copying files to the USB stick: " + str(e))
 
-    poweroff(disk_path)
+        poweroff(disk_path)
+
+    logger.info("Syncing time and schedule!")
+    witty_pi = Path.home() / 'wittypi'
+    subprocess.run(['sudo', 'bash', str(witty_pi / 'syncTime.sh')])
+    subprocess.run(['sudo', 'bash', str(witty_pi / 'runScript.sh')])
 
 
 def loop():
