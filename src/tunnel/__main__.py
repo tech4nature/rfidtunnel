@@ -28,7 +28,9 @@ def start():
     set_voltage_threshold(float(CONFIG['voltage_threshold']))
     set_recovery_threshold(float(CONFIG['recovery_threshold']))
 
-    if os.stat(DATA_DIR / 'data.csv').st_size == 0:
+    try:
+        open(DATA_DIR / 'data.csv', 'r')
+    except FileNotFoundError:
         csv_file = open(DATA_DIR / 'data.csv', 'a+')
         fieldnames = ['Tunnel', 'Ppt Tag', 'Time', 'Date']
         writer = DictWriter(csv_file, fieldnames=fieldnames)
