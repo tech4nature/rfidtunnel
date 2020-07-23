@@ -48,6 +48,6 @@ Enter what you would like to do today:
         start = input("Enter the hour you want the tunnel to start at: ")
         end = input("Enter the hour you want the tunnel to end at: ")
 
-        run(['ssh', f'pi@{ip}', '/home/pi/.pyenv/shims/python', '-m', 'src.tunnel.set_box_id', start, end])
+        run(['ssh', f'pi@{ip}', '/home/pi/.pyenv/shims/python', '-m', 'src.tunnel.schedule', start, end])
 
     input("Press Enter to exit...")
