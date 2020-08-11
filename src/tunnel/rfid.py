@@ -36,9 +36,9 @@ class RFID:
         raw_tag = self.ser.read_until(size=self.tag_size + 6).decode()
         # byte count = OK + \r + \n + self.tag_size + \r + \n = 6 + self.tag_size
 
-        if len(raw_tag) >= self.tag_size:  # Check that is got the expected size
+        try:
             tag = self.matcher.findall(raw_tag)[0]
-        else:
+        except:
             return
 
         data = Data(CONFIG['box_id'], tag, datetime.now())

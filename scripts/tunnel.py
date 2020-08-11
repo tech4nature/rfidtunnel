@@ -1,5 +1,18 @@
 from subprocess import run
 from datetime import datetime
+import string
+
+
+def get_times():
+    while True:
+        try:
+            start = int(input("Enter the hour you want the tunnel to start at: "))
+            end = int(input("Enter the hour you want the tunnel to end at: "))
+            break
+        except ValueError:
+            print("Please write the values in the correct format!")
+
+    return start, end
 
 
 if __name__ == "__main__":
@@ -36,18 +49,70 @@ Enter what you would like to do today:
         if diff > 60:
             print("Difference in time is too large, syncing time!")
             run(['ssh', f'pi@{ip}', 'sudo', 'bash', '/home/pi/wittypi/syncTime.sh'])
-            run(['ssh', f'pi@{ip}', 'sudo', 'bash', '/home/pi/wittypi/runScript.sh'])
+            run(['ssh', f'pi@{ip}', 'sudo', 'bash', '/home/pi/wittypi/runScript.sh', '>>', '/dev/null'])
+            print("Sync successful!")
         else:
             print("Time is correct!")
 
     if action == 2:
-        tunnel_id = input("Enter the tunnel id you would like to use: ")
+        while True:
+            tunnel_id = input(
+                "Enter the tunnel id you would like to use, it has to only have letters or numbers and no spaces: "
+            )
+
+            invalid = False
+
+            for i in tunnel_id:
+                if i not in string.ascii_letters + string.digits:
+                    print("Box id is invalid, try again!")
+                    invalid = True
+
+            if not invalid:
+                break
+
         run(['ssh', f'pi@{ip}', '/home/pi/.pyenv/shims/python', '-m', 'src.tunnel.set_box_id', tunnel_id])
 
     if action == 3:
-        start = input("Enter the hour you want the tunnel to start at: ")
-        end = input("Enter the hour you want the tunnel to end at: ")
+        print("The format for entering the times is in 24 hour clock, only include hours, for example 3pm is 15 and "
+              "2am is 2!")
+        while True:
+            start, end = get_times()
+            diff = end - start
+            diff = diff if diff >= 0 else diff + 24
 
-        run(['ssh', f'pi@{ip}', '/home/pi/.pyenv/shims/python', '-m', 'src.tunnel.schedule', start, end])
+            if start not in range(0, 24) or end not in range(0, 24):
+                print("Time is not in range please enter it properly")
+
+            elif diff == 0:
+                print("You cannot have the same time as both the end and start time!")
+
+            elif diff > 12:
+                print(
+                    "This is not designed to run for more than 12 hours per day and most likely will run for less "
+                    "than 2 weeks"
+                )
+                while True:
+                    yesno = input("Is this ok (yes/ no)? ")
+                    if yesno.lower() not in ['yes', 'no']:
+                        print("You did not enter a yes or a no, please enter it properly!")
+                    else:
+                        break
+                if yesno == 'yes':
+                    break
+            else:
+                break
+
+        schedule = run(
+            [
+                'ssh', f'pi@{ip}', '/home/pi/.pyenv/shims/python', '-m', 'src.tunnel.schedule', str(start), str(end),
+                '>>', '/dev/null'
+            ],
+            capture_output=True
+        ).stderr.decode()
+
+        if not schedule:
+            print("Schedule successfully written!")
+        else:
+            print("Something went wrong, please try again!")
 
     input("Press Enter to exit...")

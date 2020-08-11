@@ -1,4 +1,4 @@
-from src.tunnel.wittypi import *
+from .wittypi import *
 
 if __name__ == "__main__":
     set_default_on(True)
