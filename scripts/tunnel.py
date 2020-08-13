@@ -92,8 +92,8 @@ Enter what you would like to do today:
 
             elif diff > 12:
                 print(
-                    "The system is not designed to run for more than 12 hours per day and most likely will run for less "
-                    "than 2 weeks"
+                    "The system is not designed to run for more than 12 hours per day and most likely will run for "
+                    "less than 2 weeks"
                 )
                 while True:
                     yesno = input("Is this ok (yes/ no)? ")
