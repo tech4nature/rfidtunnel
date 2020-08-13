@@ -1,4 +1,4 @@
-As we have to have the RFID board connected to power 24/7, we need some way of turning it off and on and shutdown and startup respectivly.
+As we have to have the RFID board connected to power 24/7, we need some way of turning it off and on and shutdown and startup respectively.
 
 Deactivation:
 

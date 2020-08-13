@@ -27,14 +27,20 @@ if __name__ == "__main__":
         input()
         exit()
 
-    action = int(input("""
-Enter what you would like to do today:
-1) Sync the time
-2) Set the tunnel id
-3) Schedule when the tunnel runs
-4) Delete the data off the tunnel
-5) Shutdown the tunnel
-"""))
+    while True:
+        action = int(input("""
+    Enter what you would like to do today:
+    1) Sync the time
+    2) Set the tunnel id
+    3) Schedule when the tunnel runs
+    4) Delete the data off the tunnel
+    5) Shutdown the tunnel
+    """))
+
+        if action in range(1, 6):
+            break
+        else:
+            print("Needs to be a number from 1 to 5!")
 
     if action == 1:
         print("Checking time...")
@@ -47,10 +53,9 @@ Enter what you would like to do today:
         print(f"Tunnel's time is: {remote_date}")
 
         diff = (host_date - remote_date).total_seconds()
-        if diff < 0:
-            diff = -diff
+        diff = diff if diff >= 0 else -diff
 
-        if diff > 60:
+        if diff > 60:  # In seconds
             print("Difference in time is too large, syncing time!")
             run(['ssh', f'pi@{ip}', 'sudo', 'bash', '/home/pi/wittypi/syncTime.sh'])
             run(['ssh', f'pi@{ip}', 'sudo', 'bash', '/home/pi/wittypi/runScript.sh', '>>', '/dev/null'])

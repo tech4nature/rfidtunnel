@@ -2,7 +2,6 @@ from logging.handlers import RotatingFileHandler
 from shutil import copyfile
 import logging
 from csv import DictWriter
-import os
 from time import time
 from typing import Optional
 import subprocess
@@ -12,11 +11,12 @@ from .usb import mount, poweroff
 from .rfid import RFID
 from .wittypi import *
 
-logger: logging.Logger = logging.getLogger("tunnel")
-rfid = RFID()
+logger = logging.getLogger("tunnel")
+rfid = RFID()  # Sets up serial port
 
 
 def start():
+    # Mounts the USB stick
     mounted_dir: Optional[Path] = None
     disk_path: Optional[Path] = None
 
@@ -25,9 +25,11 @@ def start():
     except Exception:
         pass
 
+    # Sets voltage thresholds for the wittyPi
     set_voltage_threshold(float(CONFIG['voltage_threshold']))
     set_recovery_threshold(float(CONFIG['recovery_threshold']))
 
+    # Writes CSV headers if there aren't any
     try:
         open(DATA_DIR / 'data.csv', 'r')
     except FileNotFoundError:
@@ -36,6 +38,7 @@ def start():
         writer = DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
+    # Copies the files to the USB stick and powers it off
     if mounted_dir and disk_path:
         try:
             copyfile(DATA_DIR / 'tunnel.log', mounted_dir / 'tunnel.log')
@@ -53,6 +56,7 @@ def start():
 
 
 def loop():
+    # Reads a RFID tag
     data = rfid.read()
     if data:
         logger.info(f'Got {data.tag}')
@@ -77,10 +81,11 @@ def log_power():
 if __name__ == "__main__":
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
 
+    # https://docs.python.org/3/library/logging.handlers.html#logging.handlers.RotatingFileHandler
     file_handler = RotatingFileHandler(str(DATA_DIR / 'tunnel.log'), maxBytes=1024 * 1024, backupCount=5)
     file_handler.setFormatter(formatter)
 
-    console_handler = logging.StreamHandler()
+    console_handler = logging.StreamHandler()  # Log things to the console
     console_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)

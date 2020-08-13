@@ -17,7 +17,7 @@ if __name__ == "__main__":
     OFF M5
     ON M5
     OFF S{off_time.seconds}
-    """.replace('    ', '')
+    """.replace('    ', '')  # WittyPi schedule
 
     schedule_file = str(Path.home() / 'wittypi' / 'schedule.wpi')
     open(schedule_file, 'a+')
