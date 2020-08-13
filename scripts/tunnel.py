@@ -1,6 +1,7 @@
 from subprocess import run
 from datetime import datetime
 import string
+from time import sleep
 
 
 def get_times():
@@ -30,6 +31,8 @@ Enter what you would like to do today:
 1) Sync the time
 2) Set the tunnel id
 3) Schedule when the tunnel runs
+4) Delete the data off the tunnel
+5) Shutdown the tunnel
 """))
 
     if action == 1:
@@ -54,7 +57,7 @@ Enter what you would like to do today:
         else:
             print("Time is correct!")
 
-    if action == 2:
+    elif action == 2:
         while True:
             tunnel_id = input(
                 "Enter the tunnel id you would like to use, it has to only have letters or numbers and no spaces: "
@@ -72,7 +75,7 @@ Enter what you would like to do today:
 
         run(['ssh', f'pi@{ip}', '/home/pi/.pyenv/shims/python', '-m', 'src.tunnel.set_box_id', tunnel_id])
 
-    if action == 3:
+    elif action == 3:
         print("The format for entering the times is in 24 hour clock, only include hours, for example 3pm is 15 and "
               "2am is 2!")
         while True:
@@ -114,5 +117,16 @@ Enter what you would like to do today:
             print("Schedule successfully written!")
         else:
             print("Something went wrong, please try again!")
+
+    elif action == 4:
+        run(['ssh', f'pi@{ip}', 'sudo', 'pkill', '-f', 'python'])
+        run(['ssh', f'pi@{ip}', 'rm', 'data/data.csv'])
+        print("Data deleted!")
+
+    elif action == 5:
+        run(['ssh', f'pi@{ip}', 'sudo', 'poweroff'])
+        print("Please wait for the tunnel shutdown!")
+        sleep(10)
+        print("Tunnel is shutdown!")
 
     input("Press Enter to exit...")
