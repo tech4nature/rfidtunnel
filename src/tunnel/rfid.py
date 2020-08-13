@@ -35,11 +35,11 @@ class RFID:
         self.ser.reset_output_buffer()  # clean buffer
 
         raw_tag = self.ser.read_until(size=self.tag_size + 1)
-        logger.debug(f"Raw RFID data is: {raw_tag}")
         # byte count = self.tag_size + \r = self.tag_size + 1
 
         try:
             tag = self.matcher.findall(raw_tag.decode())[0]  # Decode uses the UTF-8 codec
+            logger.debug(f"Raw RFID data is: {raw_tag}")
         except:
             return
 
