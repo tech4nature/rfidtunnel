@@ -21,6 +21,7 @@ if __name__ == "__main__":
         print("Finding address of Tunnel...")
         nmap = run(['nmap', '-T5', '-sP', '10.42.0.1-255'], capture_output=True).stdout.decode()
         ip = nmap.split('\n')[3][21:]
+        print(ip)
     except:
         print("The tunnel could not be found, make sure its turned on and plugged in!")
         input()
@@ -91,7 +92,7 @@ Enter what you would like to do today:
 
             elif diff > 12:
                 print(
-                    "This is not designed to run for more than 12 hours per day and most likely will run for less "
+                    "The system is not designed to run for more than 12 hours per day and most likely will run for less "
                     "than 2 weeks"
                 )
                 while True:
